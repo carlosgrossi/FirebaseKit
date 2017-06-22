@@ -34,4 +34,8 @@ extension FirebaseDataSnapshot {
         return snapshot.children.allObjects as? [AnyHashable]
     }
     
+    public func key() -> String {
+        return snapshot.key
+    }
+    
 }

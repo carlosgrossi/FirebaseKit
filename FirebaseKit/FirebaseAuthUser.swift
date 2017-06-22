@@ -89,29 +89,32 @@ extension FirebaseAuthUser {
         }
     }
     
-    public func update(displayName:String?) {
+    public func update(displayName:String?, completion: ((Error?) -> Void)?) {
         let profileChangeRequest = user.profileChangeRequest()
         profileChangeRequest.displayName = displayName
-        profileChangeRequest.commitChanges(completion: nil)
-//        user.profileChangeRequest().displayName = displayName
-//        print(user.profileChangeRequest().displayName)
+        profileChangeRequest.commitChanges(completion: completion)
     }
     
-    public func update(photoURL:URL?) {
-        user.profileChangeRequest().photoURL = photoURL
-    }
-    
-    public func commitChanges(completion:((Error?)->Void)?) {
-        print(user.profileChangeRequest().displayName)
-        user.profileChangeRequest().commitChanges { (error) in
-            print(error)
-            completion?(error)
-        }
-        //user.profileChangeRequest().commitChanges(completion: completion)
+    public func update(photoURL:URL?, completion: ((Error?) -> Void)?) {
+        let profileChangeRequest = user.profileChangeRequest()
+        profileChangeRequest.photoURL = photoURL
+        profileChangeRequest.commitChanges(completion: completion)
     }
     
     public func reload(completion:((Error?)->Void)?) {
         user.reload(completion: completion)
+    }
+    
+    public func delete(completion:((Error?) -> Void)?) {
+        user.delete(completion:completion)
+    }
+    
+    public func updatePassword(password: String, completion:((Error?) -> Void)?) {
+        user.updatePassword(password, completion: completion)
+    }
+    
+    public func updateEmail(email: String, completion:((Error?) -> Void)?) {
+        user.updateEmail(email, completion: completion)
     }
     
 }

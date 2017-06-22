@@ -61,6 +61,20 @@ extension FirebaseAuth {
         FIRAuth.auth()?.sendPasswordReset(withEmail: email, completion: completition)
     }
     
+    public func verifyPasswordResetCode(code:String, completion:@escaping ((String?, Error?) -> Void)) {
+        FIRAuth.auth()?.verifyPasswordResetCode(code, completion: completion)
+    }
+    
+    public func checkActionCode(code:String, completion:((Error?) -> Void)?) {
+        FIRAuth.auth()?.checkActionCode(code, completion: { (info, error) in
+            completion?(error)
+        })
+    }
+    
+    public func confirmPasswordReset(withCode code:String, newPassword password:String, completion:@escaping ((Error?) -> Void)) {
+        FIRAuth.auth()?.confirmPasswordReset(withCode: code, newPassword: password, completion: completion)
+    }
+    
 }
 
 // MARK: - Sign In
@@ -123,6 +137,14 @@ extension FirebaseAuth {
         return currentUser.isEmailVerified
     }
     
+    public func linkedProvidersForSignedInUser() -> [String] {
+        var linkedProviders: [String] = []
+        guard let providerData = FIRAuth.auth()?.currentUser?.providerData else { return linkedProviders }
+        for linkedProvider in providerData {
+            linkedProviders.append(linkedProvider.providerID)
+        }
+        return linkedProviders
+    }
 }
 
 // MARK: - Sign Out

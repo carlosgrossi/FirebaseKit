@@ -18,10 +18,18 @@ public struct FirebaseDatabase {
 // MARK: - Observe Data
 extension FirebaseDatabase {
     
-    public func observe(childPath:String, eventType:FIRDataEventType, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> Void {
-        dbReference.child(childPath).observe(eventType, with: { (dataSnapshot) in
+    public func observe(childPath:String, eventType:FIRDataEventType, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> UInt {
+        return dbReference.child(childPath).observe(eventType, with: { (dataSnapshot) in
             completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
         }, withCancel: cancel)
+    }
+    
+    public func observe(childPath:String, joiningChildPath joinChildPath:String, eventType:FIRDataEventType, completition:@escaping ((FirebaseDataSnapshot?, FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> UInt {
+        return dbReference.child(childPath).observe(eventType, with: { (dataSnapshot) in
+            self.dbReference.child(childPath).observe(eventType, with: { (joinDataSnapshot) in
+                completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot), FirebaseDataSnapshot.dataSnapshot(withSnapshot: joinDataSnapshot))
+            }, withCancel: nil)
+        }, withCancel: nil)
     }
     
     public func observeSingleEvent(of eventType:FIRDataEventType, onChildPath childPath:String, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> Void {
@@ -30,13 +38,30 @@ extension FirebaseDatabase {
         }, withCancel: cancel)
     }
     
-    public func observe (childPath:String, eventType:FIRDataEventType, orderedBy:String, startingAt:Any?, limitedToFirst:UInt, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> Void {
-        dbReference.child(childPath).queryOrdered(byChild: orderedBy).queryStarting(atValue: startingAt).queryLimited(toFirst: limitedToFirst).observe(eventType, with:
+    public func observeSingleEvent(of eventType:FIRDataEventType, onChildPath childPath:String, orderedBy:String, startingAt:Any?, limitedToLast:UInt, completition:@escaping ((FirebaseDataSnapshot?)->())) -> Void {
+        dbReference.child(childPath).queryOrdered(byChild: orderedBy).queryStarting(atValue: startingAt).queryLimited(toLast: limitedToLast).observeSingleEvent(of: eventType) { (dataSnapshot) in
+            completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
+        }
+    }
+    
+    public func observeSingleEvent(of eventType:FIRDataEventType, onChildPath childPath:String, orderedBy:String, endingAt:Any?, limitedToLast:UInt, completition:@escaping ((FirebaseDataSnapshot?)->())) -> Void {
+        dbReference.child(childPath).queryOrdered(byChild: orderedBy).queryEnding(atValue: endingAt).queryLimited(toLast: limitedToLast).observeSingleEvent(of: eventType) { (dataSnapshot) in
+            completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
+        }
+    }
+    
+    public func observe(childPath:String, eventType:FIRDataEventType, orderedBy:String, startingAt:Any?, limitedToLast:UInt, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> UInt {
+        return dbReference.child(childPath).queryOrdered(byChild: orderedBy).queryStarting(atValue: startingAt).queryLimited(toLast: limitedToLast).observe(eventType, with:
             { (dataSnapshot) in
                 completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
         }, withCancel: cancel)
     }
     
+    
+    public func removeObserver(withHandle handle:UInt?) {
+        guard let handle = handle else { return }
+        return dbReference.removeObserver(withHandle: handle)
+    }
 }
 
 // MARK: - Query Data
@@ -76,7 +101,6 @@ extension FirebaseDatabase {
     
 }
 
-
 // MARK: - Write Data
 extension FirebaseDatabase {
     
@@ -94,10 +118,12 @@ extension FirebaseDatabase {
         }
     }
     
-    public func appendValue(value:Any?, andPriority priority:Any?, toChildPath childPath:String, withCompletitionBlock completitionBlock:((Error?)->())?) -> Void {
-        dbReference.child(childPath).childByAutoId().setValue(value, andPriority: priority) { (error, dbReference) in
+    public func appendValue(value:Any?, andPriority priority:Any?, toChildPath childPath:String, withCompletitionBlock completitionBlock:((Error?)->())?) -> String {
+        let dbReferenceChild = dbReference.child(childPath).childByAutoId()
+        dbReferenceChild.setValue(value, andPriority: priority) { (error, dbReference) in
             completitionBlock?(error)
         }
+        return dbReferenceChild.key
     }
     
     public func remove(child:String, withCompletionBlock completionBlock:((Error?)->())?) -> Void {
@@ -133,5 +159,32 @@ extension FirebaseDatabase {
         }, withLocalEvents: withLocalEvents)
     }
 
+}
+
+
+// MARK: - Key Encoding / Decoding
+extension FirebaseDatabase {
+    
+    public func encoded(_ key:String) -> String {
+        return key
+            .replacingOccurrences(of: ".", with: "%p%")
+            .replacingOccurrences(of: "#", with: "%h%")
+            .replacingOccurrences(of: "$", with: "%d%")
+            .replacingOccurrences(of: "[", with: "%o%")
+            .replacingOccurrences(of: "]", with: "%c%")
+            .replacingOccurrences(of: "_", with: "%u%")
+            .replacingOccurrences(of: "/", with: "%s%")
+    }
+    
+    public func decoded(_ key:String) -> String {
+        return key
+            .replacingOccurrences(of: "%p%", with: ".")
+            .replacingOccurrences(of: "%h%", with: "#")
+            .replacingOccurrences(of: "%d%", with: "$")
+            .replacingOccurrences(of: "%o%", with: "[")
+            .replacingOccurrences(of: "%c%", with: "]")
+            .replacingOccurrences(of: "%u%", with: "_")
+            .replacingOccurrences(of: "%s%", with: "/")
+    }
     
 }

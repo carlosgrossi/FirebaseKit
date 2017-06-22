@@ -30,6 +30,7 @@
 		0E13F1191E3919AC00BBC4D9 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E13F1181E3919AC00BBC4D9 /* FirebaseStorage.swift */; };
 		0E13F1221E391D8D00BBC4D9 /* FirebaseStorageMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E13F1211E391D8D00BBC4D9 /* FirebaseStorageMetadata.swift */; };
 		0E13F1241E39217F00BBC4D9 /* FirebaseTaskSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E13F1231E39217F00BBC4D9 /* FirebaseTaskSnapshot.swift */; };
+		0E7533261EF9E45B00D3D6CC /* GoogleMobileAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7533251EF9E45B00D3D6CC /* GoogleMobileAds.swift */; };
 		0E7767F21E380760001D2D18 /* FirebaseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7767E81E380760001D2D18 /* FirebaseKit.framework */; };
 		0E7767F71E380760001D2D18 /* FirebaseKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7767F61E380760001D2D18 /* FirebaseKitTests.swift */; };
 		0E7767F91E380760001D2D18 /* FirebaseKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E7767EB1E380760001D2D18 /* FirebaseKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -77,6 +78,7 @@
 		0E13F1181E3919AC00BBC4D9 /* FirebaseStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		0E13F1211E391D8D00BBC4D9 /* FirebaseStorageMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseStorageMetadata.swift; sourceTree = "<group>"; };
 		0E13F1231E39217F00BBC4D9 /* FirebaseTaskSnapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseTaskSnapshot.swift; sourceTree = "<group>"; };
+		0E7533251EF9E45B00D3D6CC /* GoogleMobileAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMobileAds.swift; sourceTree = "<group>"; };
 		0E7767E81E380760001D2D18 /* FirebaseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E7767EB1E380760001D2D18 /* FirebaseKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirebaseKit.h; sourceTree = "<group>"; };
 		0E7767EC1E380760001D2D18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 			name = "Remote Config";
 			sourceTree = "<group>";
 		};
+		0E7533241EF9E3CF00D3D6CC /* Google Mobile Ads */ = {
+			isa = PBXGroup;
+			children = (
+				0E7533251EF9E45B00D3D6CC /* GoogleMobileAds.swift */,
+			);
+			name = "Google Mobile Ads";
+			sourceTree = "<group>";
+		};
 		0E7767DE1E380760001D2D18 = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +183,7 @@
 			children = (
 				0E77680E1E38084C001D2D18 /* Frameworks */,
 				0E7768C91E38BCA9001D2D18 /* FirebaseCore.swift */,
+				0E7533241EF9E3CF00D3D6CC /* Google Mobile Ads */,
 				0E7768CD1E390F22001D2D18 /* Auth */,
 				0E7768CE1E390F28001D2D18 /* Database */,
 				0E13F11A1E3919B200BBC4D9 /* Storage */,
@@ -367,6 +378,7 @@
 				0E7768151E380881001D2D18 /* FirebaseAuthUser.swift in Sources */,
 				0E7768D21E391004001D2D18 /* FirebaseTransactionResult.swift in Sources */,
 				0E7768B51E38BA7A001D2D18 /* FirebaseDatabase.swift in Sources */,
+				0E7533261EF9E45B00D3D6CC /* GoogleMobileAds.swift in Sources */,
 				0E13F1171E39163700BBC4D9 /* FirebaseQuery.swift in Sources */,
 				0E7768CA1E38BCA9001D2D18 /* FirebaseCore.swift in Sources */,
 				0E13F1221E391D8D00BBC4D9 /* FirebaseStorageMetadata.swift in Sources */,
