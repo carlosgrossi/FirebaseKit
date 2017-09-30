@@ -56,8 +56,23 @@ extension FirebaseDatabase {
                 completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
         }, withCancel: cancel)
     }
-    
-    
+	
+	public func observe(childPath:String, eventType:FIRDataEventType, startingAt:Any?, limitedToLast:UInt, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> UInt {
+		return dbReference.child(childPath).queryStarting(atValue: startingAt).queryLimited(toLast: limitedToLast).observe(eventType, with:
+			{ (dataSnapshot) in
+				completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
+		}, withCancel: cancel)
+	}
+	
+	public func observeLastEntry(childPath:String, eventType:FIRDataEventType, limitedTo:UInt, completition:@escaping ((FirebaseDataSnapshot?)->()), cancel:((Error)->())?) -> UInt {
+		return dbReference.child(childPath).queryOrderedByKey().queryLimited(toLast: limitedTo).observe(eventType, with:
+			{ (dataSnapshot) in
+				completition(FirebaseDataSnapshot.dataSnapshot(withSnapshot: dataSnapshot))
+		}, withCancel: cancel)
+	}
+	
+	
+	
     public func removeObserver(withHandle handle:UInt?) {
         guard let handle = handle else { return }
         return dbReference.removeObserver(withHandle: handle)

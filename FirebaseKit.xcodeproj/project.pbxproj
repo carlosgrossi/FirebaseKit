@@ -321,12 +321,13 @@
 					0E7767E71E380760001D2D18 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = K34G3U98RH;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					0E7767F01E380760001D2D18 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = K34G3U98RH;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
